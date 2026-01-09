@@ -6,7 +6,6 @@ class RealtimeSync {
   private channel: BroadcastChannel | null = null;
   private handlers: Set<MessageHandler> = new Set();
   private fallbackEnabled = false;
-  private roomId: string = '';
 
   constructor() {
     // Check BroadcastChannel support
@@ -20,7 +19,6 @@ class RealtimeSync {
   }
 
   initialize(roomId: string) {
-    this.roomId = roomId;
     
     if (!this.fallbackEnabled && typeof BroadcastChannel !== 'undefined') {
       this.channel = new BroadcastChannel(`whiteboard_${roomId}`);

@@ -1,19 +1,14 @@
 // Simple peer-to-peer WebRTC for video chat (no backend required)
 // Uses BroadcastChannel for signaling within same origin
 
-type SignalHandler = (signal: any) => void;
-
 export class SimpleWebRTC {
   private peerConnection: RTCPeerConnection | null = null;
   private localStream: MediaStream | null = null;
   private signalChannel: BroadcastChannel | null = null;
-  private roomId: string = '';
   private peerId: string = '';
   private onRemoteStreamCallback: ((stream: MediaStream) => void) | null = null;
-  private onSignalHandler: SignalHandler | null = null;
 
   constructor(roomId: string) {
-    this.roomId = roomId;
     this.peerId = `peer_${Date.now()}_${Math.random()}`;
     this.signalChannel = new BroadcastChannel(`webrtc_${roomId}`);
     this.setupSignaling();

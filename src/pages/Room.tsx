@@ -249,12 +249,12 @@ export default function Room() {
   };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!isDrawing || role !== 'trainer') return;
+    if (!isDrawing || role !== 'trainer' || tool === 'text') return;
 
     const point = getCanvasPoint(e);
     setCurrentStroke((prev) => {
       const newStroke = [...prev, point];
-      if (rendererRef.current) {
+      if (rendererRef.current && (tool === 'pen' || tool === 'eraser')) {
         rendererRef.current.render(pages[currentPageIndex].operations);
         rendererRef.current.drawPreviewStroke(newStroke, color, lineWidth, tool);
       }
@@ -263,10 +263,10 @@ export default function Room() {
   };
 
   const handleMouseUp = () => {
-    if (!isDrawing || role !== 'trainer') return;
+    if (!isDrawing || role !== 'trainer' || tool === 'text') return;
 
     setIsDrawing(false);
-    if (currentStroke.length > 1) {
+    if (currentStroke.length > 1 && (tool === 'pen' || tool === 'eraser')) {
       const stroke = createStroke(currentStroke, color, lineWidth, tool);
       setPages((prev) => {
         const newPages = [...prev];
